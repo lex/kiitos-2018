@@ -10,10 +10,20 @@
     <p v-else>
       No observations.
     </p>
+
+    <ul>
+      <li v-for="(observation, i) of details.observations" :key="i">
+        <p>
+          {{ observation.timestamp }} {{ observation.temperature }}
+        </p>
+      </li>
+    </ul>
   </div>
 </template>
 
 <script>
+import { getDetails } from '../services/observations';
+
 export default {
   name: 'point-details',
   props: {
@@ -21,8 +31,13 @@ export default {
   },
   data() {
     return {
-      observations: [],
+      details: null,
     };
+  },
+  mounted() {
+    getDetails(this.point.id).then(details => {
+      this.details = details;
+    });
   },
 };
 </script>

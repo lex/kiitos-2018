@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import { getPoints } from '../services/observations';
 import PointDetails from './PointDetails';
 
 export default {
@@ -25,8 +25,8 @@ export default {
     return { points: [], loading: true };
   },
   mounted() {
-    axios.get('http://127.0.0.1:5000/observation-points/').then(response => {
-      this.points = response.data;
+    getPoints().then(points => {
+      this.points = points;
       this.loading = false;
     });
   },
