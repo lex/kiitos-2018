@@ -25,7 +25,7 @@ export default {
     return { points: [], loading: true };
   },
   mounted() {
-    axios.get('http://127.0.0.1:5000/observation-points/').then((response) => {
+    axios.get('http://127.0.0.1:5000/observation-points/').then(response => {
       this.points = response.data;
       this.loading = false;
     });
