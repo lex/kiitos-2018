@@ -2,6 +2,8 @@
 
 > A Vue.js project
 
+[Live demo](https://lex.github.io/kiitos-2018/)
+
 ## Build Setup
 
 ``` bash
