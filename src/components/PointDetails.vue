@@ -41,7 +41,7 @@
     </p>
 
     <div>
-      <new-observation-form v-bind:form="form" v-bind:onSubmit="onSubmit" />
+      <new-observation-form v-bind:form="form" v-bind:onSubmit="onSubmit" v-bind:error="error" />
     </div>
 
     <div v-if="details !== null && details.observations.length !== 0">
@@ -86,6 +86,7 @@ export default {
       form: {
         observation: '',
       },
+      error: null,
     };
   },
 
@@ -115,8 +116,10 @@ export default {
           });
 
           this.form.observation = '';
+          this.error = null;
         })
         .catch(exception => {
+          this.error = 'Please provide a valid temperature.';
           console.log(exception); // eslint-disable-line no-console
         });
     },
