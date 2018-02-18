@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="form">
         <b-form @submit="onSubmit">
             <b-form-group id="inputGroup" label="Add new temperature:" label-for="observation" description="In Celsius please.">
                 <b-form-input id="observation" type="text" v-model="form.observation" required placeholder="20.00">
@@ -24,5 +24,9 @@ export default {
 <style>
 #error {
   margin-top: 10px;
+}
+#form {
+  margin: 0 auto;
+  width: 40%;
 }
 </style>

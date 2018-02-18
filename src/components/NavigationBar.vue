@@ -3,7 +3,7 @@
         <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
         <b-navbar-brand tag="h3" class="mb-0">Kiitos-2018</b-navbar-brand>
         <b-dropdown id="ddown-left" :text="selectedFormat" variant="primary" class="m-2">
-            <b-dropdown-item-button v-for="format of temperatureFormats" :id="format.value" @click="onClick" href="#">
+            <b-dropdown-item-button v-for="format of temperatureFormats" v-bind:key="format.value" :id="format.value" @click="onClick" href="#">
                 {{ format.text }}
             </b-dropdown-item-button>
         </b-dropdown>

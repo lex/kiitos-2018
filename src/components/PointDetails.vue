@@ -1,36 +1,36 @@
 <template>
   <div>
-    <h2 id="point-name">
+    <h2 class="point-name">
       {{ point.name }}
     </h2>
 
     <div v-if="latestObservation && highestObservation && lowestObservation">
-      <b-container class="bv-example-row">
+      <b-container>
         <b-row>
           <b-col>
-            <h4>
+            <h4 class="observation-quick">
               Latest observation
             </h4>
             <p>
-              {{ latestObservation.temperature }} K at {{ latestObservation.timestamp }}
+              {{ formatTemperature(latestObservation.temperature) }} {{ temperatureUnit }} at {{ latestObservation.timestamp }}
             </p>
           </b-col>
 
           <b-col>
-            <h4>
+            <h4 class="observation-quick">
               Highest observation for the last 24 hours
             </h4>
             <p>
-              {{ highestObservation.temperature }} K at {{ highestObservation.timestamp }}
+              {{ formatTemperature(highestObservation.temperature) }} {{ temperatureUnit }} at {{ highestObservation.timestamp }}
             </p>
           </b-col>
 
           <b-col>
-            <h4>
+            <h4 class="observation-quick">
               Lowest observation for the last 24 hours
             </h4>
             <p>
-              {{ lowestObservation.temperature }} K at {{ lowestObservation.timestamp }}
+              {{ formatTemperature(lowestObservation.temperature) }} {{ temperatureUnit }} at {{ lowestObservation.timestamp }}
             </p>
           </b-col>
         </b-row>
@@ -40,15 +40,17 @@
       No observations.
     </p>
 
-    <div>
+    <div id="form">
       <new-observation-form v-bind:form="form" v-bind:onSubmit="onSubmit" v-bind:error="error" />
     </div>
 
-    <div v-if="details !== null && details.observations.length !== 0">
+    <div class="history" v-if="details !== null && details.observations.length !== 0">
       <h2>
         History
       </h2>
-      <temperature-chart v-bind:chartData="this.chartData" :options="{responsive: false, maintainAspectRatio: false}" :width="800" :height="400" v-bind:temperatureFormat="temperatureFormat" />
+      <div id="chart">
+        <temperature-chart v-bind:chartData="this.chartData" :options="{responsive: false, maintainAspectRatio: false}" :width="800" :height="400" v-bind:temperatureFormat="temperatureFormat" />
+      </div>
     </div>
   </div>
 </template>
@@ -114,6 +116,23 @@ export default {
           console.log(exception); // eslint-disable-line no-console
         });
     },
+
+    formatTemperature(temperature) {
+      let f = v => v;
+
+      switch (this.temperatureFormat) {
+        case 'celsius':
+          f = kelvinToCelsius;
+          break;
+        case 'fahrenheit':
+          f = kelvinToFahrenheit;
+          break;
+        default:
+          break;
+      }
+
+      return f(temperature);
+    },
   },
 
   computed: {
@@ -122,17 +141,14 @@ export default {
         return null;
       }
 
-      let unit = 'K';
       let f = v => v;
 
       switch (this.temperatureFormat) {
         case 'celsius':
           f = kelvinToCelsius;
-          unit = '°C';
           break;
         case 'fahrenheit':
           f = kelvinToFahrenheit;
-          unit = '°F';
           break;
         default:
           break;
@@ -142,7 +158,7 @@ export default {
         labels: this.details.observations.map(o => `${o.timestamp}`),
         datasets: [
           {
-            label: `Temperature (${unit})`,
+            label: `Temperature (${this.temperatureUnit})`,
             backgroundColor: '#0080fa',
             data: this.details.observations.map(o =>
               f(o.temperature).toFixed(2),
@@ -159,10 +175,12 @@ export default {
         return null;
       }
 
-      return this.details.observations.reduce(
+      const observation = this.details.observations.reduce(
         (max, o) => (o.temperature > max.temperature ? o : max),
         this.details.observations[0],
       );
+
+      return observation;
     },
 
     lowestObservation() {
@@ -170,12 +188,12 @@ export default {
         return null;
       }
 
-      const g = this.details.observations.reduce(
+      const observation = this.details.observations.reduce(
         (min, o) => (o.temperature < min.temperature ? o : min),
         this.details.observations[0],
       );
 
-      return g;
+      return observation;
     },
 
     latestObservation() {
@@ -183,14 +201,34 @@ export default {
         return null;
       }
 
-      return this.details.observations[this.details.observations.length - 1];
+      const observation = this.details.observations[
+        this.details.observations.length - 1
+      ];
+      return observation;
+    },
+
+    temperatureUnit() {
+      switch (this.temperatureFormat) {
+        case 'celsius':
+          return '°C';
+        case 'fahrenheit':
+          return '°F';
+        default:
+          return 'K';
+      }
     },
   },
 };
 </script>
 
 <style>
-#point-name {
+h2.point-name {
   margin-bottom: 40px;
+}
+div.history {
+  margin-top: 40px;
+}
+h4.observation-quick {
+  height: 80px;
 }
 </style>
