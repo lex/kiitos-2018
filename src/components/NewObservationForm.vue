@@ -5,7 +5,7 @@
                 <b-form-input id="observation" type="text" v-model="form.observation" required :placeholder="placeholder">
                 </b-form-input>
             </b-form-group>
-            <b-button type="submit" variant="primary">Submit</b-button>
+            <b-button type="submit" variant="primary">Add</b-button>
         </b-form>
         <b-alert id="error" show variant="danger" v-if="error">{{ error }}</b-alert>
     </div>
