@@ -1,16 +1,19 @@
 <template>
   <div id="app">
+    <navigation-bar></navigation-bar>
     <points></points>
   </div>
 </template>
 
 <script>
 import Points from './components/Points';
+import NavigationBar from './components/NavigationBar';
 
 export default {
   name: 'app',
   components: {
     Points,
+    NavigationBar,
   },
 };
 </script>
