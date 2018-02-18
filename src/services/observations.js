@@ -15,4 +15,9 @@ const getPoints = () =>
 const getDetails = id =>
   API.get(`observation-points/${id}/`).then(response => response.data);
 
-export { getPoints, getDetails };
+const addObservation = (pointId, temperature) => {
+  const observation = { point_id: pointId, temperature };
+  return API.post('observations/', observation).then(response => response.data);
+};
+
+export { getPoints, getDetails, addObservation };
