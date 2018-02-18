@@ -41,7 +41,7 @@
     </p>
 
     <div id="form">
-      <new-observation-form v-bind:form="form" v-bind:onSubmit="onSubmit" v-bind:error="error" />
+      <new-observation-form v-bind:form="form" v-bind:temperatureFormat="temperatureFormat" v-bind:onSubmit="onSubmit" v-bind:error="error" />
     </div>
 
     <div class="history" v-if="details !== null && details.observations.length !== 0">
@@ -64,6 +64,8 @@ import {
   kelvinToCelsius,
   kelvinToFahrenheit,
   celsiusToKelvin,
+  fahrenheitToKelvin,
+  unitForFormat,
 } from '../utils/temperature-converter';
 
 export default {
@@ -99,7 +101,20 @@ export default {
     onSubmit(e) {
       e.preventDefault();
 
-      const temperature = celsiusToKelvin(parseFloat(this.form.observation));
+      let f = v => v;
+
+      switch (this.temperatureFormat) {
+        case 'celsius':
+          f = celsiusToKelvin;
+          break;
+        case 'fahrenheit':
+          f = fahrenheitToKelvin;
+          break;
+        default:
+          break;
+      }
+
+      const temperature = f(parseFloat(this.form.observation)).toFixed(10);
 
       addObservation(this.point.id, temperature)
         .then(response => {
@@ -208,14 +223,7 @@ export default {
     },
 
     temperatureUnit() {
-      switch (this.temperatureFormat) {
-        case 'celsius':
-          return '°C';
-        case 'fahrenheit':
-          return '°F';
-        default:
-          return 'K';
-      }
+      return unitForFormat(this.temperatureFormat);
     },
   },
 };

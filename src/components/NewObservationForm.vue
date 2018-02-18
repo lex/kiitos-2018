@@ -1,8 +1,8 @@
 <template>
     <div id="form">
         <b-form @submit="onSubmit">
-            <b-form-group id="inputGroup" label="Add new temperature:" label-for="observation" description="In Celsius please.">
-                <b-form-input id="observation" type="text" v-model="form.observation" required placeholder="20.00">
+            <b-form-group id="inputGroup" label="Add new temperature:" label-for="observation" :description="description">
+                <b-form-input id="observation" type="text" v-model="form.observation" required :placeholder="placeholder">
                 </b-form-input>
             </b-form-group>
             <b-button type="submit" variant="primary">Submit</b-button>
@@ -12,11 +12,33 @@
 </template>
 
 <script>
+import {
+  kelvinToCelsius,
+  kelvinToFahrenheit,
+  unitForFormat,
+} from '../utils/temperature-converter';
+
 export default {
   name: 'new-observation-form',
-  props: ['onSubmit', 'form', 'error'],
+  props: ['onSubmit', 'form', 'error', 'temperatureFormat'],
   data() {
     return {};
+  },
+  computed: {
+    placeholder() {
+      const placeholderTemperature = 296.65;
+      switch (this.temperatureFormat) {
+        case 'celsius':
+          return kelvinToCelsius(placeholderTemperature).toFixed(2);
+        case 'fahrenheit':
+          return kelvinToFahrenheit(placeholderTemperature).toFixed(2);
+        default:
+          return placeholderTemperature;
+      }
+    },
+    description() {
+      return `In the selected unit (${unitForFormat(this.temperatureFormat)})`;
+    },
   },
 };
 </script>
