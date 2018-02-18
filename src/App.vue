@@ -5,7 +5,6 @@
   </div>
 </template>
 
-
 <script>
 import Points from './components/Points';
 import NavigationBar from './components/NavigationBar';

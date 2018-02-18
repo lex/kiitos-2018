@@ -1,9 +1,9 @@
 <template>
   <div class="points">
     <div>
-      <p v-if="loading">Loading...</p>
+      <loading-screen v-if="loading" />
 
-      <div v-if="points.length !== 0">
+      <div v-if="!loading">
         <b-card no-body>
           <b-tabs pills card vertical nav-wrapper-class="w-20">
             <b-tab v-for="point of points" :key="point.id" v-bind:title="point.name" v-bind:point="point">
@@ -19,11 +19,12 @@
 <script>
 import { getPoints } from '../services/observations';
 import PointDetails from './PointDetails';
+import LoadingScreen from './LoadingScreen';
 
 export default {
   name: 'points',
   props: ['temperatureFormat'],
-  components: { PointDetails },
+  components: { PointDetails, LoadingScreen },
   data() {
     return { points: [], loading: true };
   },
