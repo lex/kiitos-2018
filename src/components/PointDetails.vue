@@ -11,21 +11,19 @@
       No observations.
     </p>
 
-    <ul>
-      <li v-for="(observation, i) of details.observations" :key="i">
-        <p>
-          {{ observation.timestamp }} {{ observation.temperature }}
-        </p>
-      </li>
-    </ul>
+    <div style="max-width: 80%; display: inline-block">
+      <temperature-chart v-if="details !== null && details.observations.length !== 0" v-bind:observations="details.observations" v-bind:options="{responsive: true}" :width="800" />
+    </div>
   </div>
 </template>
 
 <script>
 import { getDetails } from '../services/observations';
+import TemperatureChart from './TemperatureChart';
 
 export default {
   name: 'point-details',
+  components: { TemperatureChart },
   props: {
     point: Object,
   },

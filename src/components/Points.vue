@@ -2,7 +2,7 @@
   <div class="points">
     <p v-if="loading">Loading...</p>
 
-    <div v-if="points">
+    <div v-if="points.length !== 0">
       <b-card no-body>
         <b-tabs pills card vertical nav-wrapper-class="w-20">
           <b-tab v-for="point of points" :key="point.id" v-bind:title="point.name" v-bind:point="point">
