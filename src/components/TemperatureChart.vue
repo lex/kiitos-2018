@@ -1,24 +1,13 @@
 <script>
-import { Line } from 'vue-chartjs';
+import { Line, mixins } from 'vue-chartjs';
 
 export default {
   name: 'temperature-chart',
   extends: Line,
-  props: ['observations', 'options'],
+  mixins: [mixins.reactiveProp],
+  props: ['chartData', 'options'],
   mounted() {
-    const chartData = {
-      labels: this.observations.map(o => o.timestamp),
-      datasets: [
-        {
-          label: 'Temperature (C)',
-          backgroundColor: '#0080fa',
-          data: this.observations.map(o =>
-            (parseFloat(o.temperature) - 273.15).toFixed(2),
-          ),
-        },
-      ],
-    };
-    this.renderChart(chartData, this.options);
+    this.renderChart(this.chartData, this.options);
   },
 };
 </script>
