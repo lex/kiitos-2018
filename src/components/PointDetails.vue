@@ -11,9 +11,9 @@
       No observations.
     </p>
 
-    <div v-if="details !== null && details.observations.length !== 0" style="max-width: 80%; display: inline-block">
+    <div v-if="details !== null && details.observations.length !== 0">
       <b-form-select v-model="temperatureFormat" :options="temperatureFormats" class="mb-3" />
-      <temperature-chart v-bind:chartData="this.chartData" v-bind:options="{responsive: true}" :width="800" v-bind:temperatureFormat="temperatureFormat" />
+      <temperature-chart v-bind:chartData="this.chartData" :options="{responsive: false, maintainAspectRatio: false}" :width="800" :height="400" v-bind:temperatureFormat="temperatureFormat" />
     </div>
   </div>
 </template>

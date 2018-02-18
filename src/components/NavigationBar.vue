@@ -1,5 +1,5 @@
 <template>
-    <b-navbar variant="faded" type="light" fixed="top">
+    <b-navbar variant="faded" type="light">
         <b-navbar-brand tag="h1" class="mb-0">Kiitos-2018</b-navbar-brand>
     </b-navbar>
 </template>
