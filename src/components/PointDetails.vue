@@ -48,7 +48,6 @@
       <h2>
         History
       </h2>
-      <b-form-select v-model="temperatureFormat" :options="temperatureFormats" class="mb-3" />
       <temperature-chart v-bind:chartData="this.chartData" :options="{responsive: false, maintainAspectRatio: false}" :width="800" :height="400" v-bind:temperatureFormat="temperatureFormat" />
     </div>
   </div>
@@ -70,19 +69,11 @@ export default {
 
   components: { TemperatureChart, NewObservationForm },
 
-  props: {
-    point: Object,
-  },
+  props: ['point', 'temperatureFormat'],
 
   data() {
     return {
       details: null,
-      temperatureFormat: 'celsius',
-      temperatureFormats: [
-        { value: 'celsius', text: 'Celsius' },
-        { value: 'fahrenheit', text: 'Fahrenheit' },
-        { value: 'kelvin', text: 'Kelvin' },
-      ],
       form: {
         observation: '',
       },

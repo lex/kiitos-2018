@@ -1,9 +1,10 @@
 <template>
   <div id="app">
-    <navigation-bar></navigation-bar>
-    <points></points>
+    <navigation-bar v-bind:onClick="onUnitClick" v-bind:temperatureFormat="temperatureFormat" v-bind:temperatureFormats="temperatureFormats"></navigation-bar>
+    <points v-bind:temperatureFormat="temperatureFormat"></points>
   </div>
 </template>
+
 
 <script>
 import Points from './components/Points';
@@ -14,6 +15,22 @@ export default {
   components: {
     Points,
     NavigationBar,
+  },
+  data() {
+    return {
+      temperatureFormat: 'celsius',
+      temperatureFormats: [
+        { value: 'celsius', text: 'Celsius' },
+        { value: 'fahrenheit', text: 'Fahrenheit' },
+        { value: 'kelvin', text: 'Kelvin' },
+      ],
+    };
+  },
+  methods: {
+    onUnitClick(e) {
+      const newFormat = e.target.id;
+      this.temperatureFormat = newFormat;
+    },
   },
 };
 </script>

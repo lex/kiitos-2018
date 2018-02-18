@@ -7,7 +7,7 @@
         <b-card no-body>
           <b-tabs pills card vertical nav-wrapper-class="w-20">
             <b-tab v-for="point of points" :key="point.id" v-bind:title="point.name" v-bind:point="point">
-              <point-details v-bind:point="point" />
+              <point-details v-bind:point="point" v-bind:temperatureFormat="temperatureFormat" />
             </b-tab>
           </b-tabs>
         </b-card>
@@ -22,6 +22,7 @@ import PointDetails from './PointDetails';
 
 export default {
   name: 'points',
+  props: ['temperatureFormat'],
   components: { PointDetails },
   data() {
     return { points: [], loading: true };
