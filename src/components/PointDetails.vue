@@ -1,12 +1,41 @@
 <template>
   <div>
-    <h2>
+    <h2 id="point-name">
       {{ point.name }}
     </h2>
 
-    <p v-if="point.latest_observation !== null">
-      Latest observation: {{ point.latest_observation.temperature }} K at {{ point.latest_observation.timestamp }}
-    </p>
+    <div v-if="latestObservation && highestObservation && lowestObservation">
+      <b-container class="bv-example-row">
+        <b-row>
+          <b-col>
+            <h4>
+              Latest observation
+            </h4>
+            <p>
+              {{ latestObservation.temperature }} K at {{ latestObservation.timestamp }}
+            </p>
+          </b-col>
+
+          <b-col>
+            <h4>
+              Highest observation for the last 24 hours
+            </h4>
+            <p>
+              {{ highestObservation.temperature }} K at {{ highestObservation.timestamp }}
+            </p>
+          </b-col>
+
+          <b-col>
+            <h4>
+              Lowest observation for the last 24 hours
+            </h4>
+            <p>
+              {{ lowestObservation.temperature }} K at {{ lowestObservation.timestamp }}
+            </p>
+          </b-col>
+        </b-row>
+      </b-container>
+    </div>
     <p v-else>
       No observations.
     </p>
@@ -65,7 +94,7 @@ export default {
       this.details = {
         ...details,
         observations: details.observations.map(o => ({
-          ...o,
+          temperature: parseFloat(o.temperature),
           timestamp: new Date(o.timestamp),
         })),
       };
@@ -88,7 +117,7 @@ export default {
           this.form.observation = '';
         })
         .catch(exception => {
-          console.log(exception);
+          console.log(exception); // eslint-disable-line no-console
         });
     },
   },
@@ -122,7 +151,7 @@ export default {
             label: `Temperature (${unit})`,
             backgroundColor: '#0080fa',
             data: this.details.observations.map(o =>
-              f(parseFloat(o.temperature)).toFixed(2),
+              f(o.temperature).toFixed(2),
             ),
           },
         ],
@@ -130,6 +159,44 @@ export default {
 
       return chartData;
     },
+
+    highestObservation() {
+      if (this.details === null || this.details.observations === null) {
+        return null;
+      }
+
+      return this.details.observations.reduce(
+        (max, o) => (o.temperature > max.temperature ? o : max),
+        this.details.observations[0],
+      );
+    },
+
+    lowestObservation() {
+      if (this.details === null || this.details.observations === null) {
+        return null;
+      }
+
+      const g = this.details.observations.reduce(
+        (min, o) => (o.temperature < min.temperature ? o : min),
+        this.details.observations[0],
+      );
+
+      return g;
+    },
+
+    latestObservation() {
+      if (this.details === null || this.details.observations === null) {
+        return null;
+      }
+
+      return this.details.observations[this.details.observations.length - 1];
+    },
   },
 };
 </script>
+
+<style>
+#point-name {
+  margin-bottom: 40px;
+}
+</style>
