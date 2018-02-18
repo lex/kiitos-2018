@@ -131,7 +131,7 @@ export default {
           break;
       }
 
-      return f(temperature);
+      return f(temperature).toFixed(2);
     },
   },
 
