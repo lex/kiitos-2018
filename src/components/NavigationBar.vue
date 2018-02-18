@@ -19,9 +19,9 @@ export default {
   },
   computed: {
     selectedFormat() {
-      return this.temperatureFormats.filter(
+      return this.temperatureFormats.find(
         f => f.value === this.temperatureFormat,
-      );
+      ).text;
     },
   },
 };
