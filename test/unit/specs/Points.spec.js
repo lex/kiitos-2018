@@ -34,7 +34,6 @@ const temperatureFormat = 'celsius';
 describe('Points.vue', () => {
   describe('rendering', () => {
     beforeEach(() => {
-      // import and pass your custom axios instance to this method
       moxios.install();
 
       moxios.stubRequest(`${baseUrl}observation-points/`, {
@@ -44,7 +43,6 @@ describe('Points.vue', () => {
     });
 
     afterEach(() => {
-      // import and pass your custom axios instance to this method
       moxios.uninstall();
     });
 
@@ -86,6 +84,7 @@ describe('Points.vue', () => {
           expect(vm.$el.querySelector('#point-tabs').children.length).to.equal(
             points.length
           );
+
           done();
         });
       });

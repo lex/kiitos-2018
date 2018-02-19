@@ -44,19 +44,19 @@ const temperatureFormat = 'celsius';
 
 describe('PointDetails.vue', () => {
   beforeEach(() => {
-    // import and pass your custom axios instance to this method
     moxios.install();
   });
 
   afterEach(() => {
-    // import and pass your custom axios instance to this method
     moxios.uninstall();
   });
+
   describe('rendering', () => {
     it('should render correct name for observation point', () => {
       const Constructor = Vue.extend(PointDetails);
       const props = { point, temperatureFormat };
       const vm = new Constructor({ propsData: props }).$mount();
+
       expect(vm.$el.querySelector('#point-name').textContent.trim()).to.equal(
         point.name
       );
@@ -74,6 +74,7 @@ describe('PointDetails.vue', () => {
       const props = { point, temperatureFormat };
       const vm = new Constructor({ propsData: props }).$mount();
       vm.details = details;
+
       Vue.nextTick(() => {
         expect(vm.$el.querySelector('#history')).to.not.equal(null);
       });
@@ -83,6 +84,7 @@ describe('PointDetails.vue', () => {
       const Constructor = Vue.extend(PointDetails);
       const props = { point, temperatureFormat };
       const vm = new Constructor({ propsData: props }).$mount();
+
       expect(
         vm.$el.querySelector('#no-observations').textContent.trim()
       ).to.equal('No observations.');
@@ -93,6 +95,7 @@ describe('PointDetails.vue', () => {
         status: 200,
         response: details
       });
+
       const Constructor = Vue.extend(PointDetails);
       const props = { point, temperatureFormat };
       const vm = new Constructor({ propsData: props }).$mount();
@@ -104,6 +107,7 @@ describe('PointDetails.vue', () => {
           ).to.include(
             kelvinToCelsius(details.observations[2].temperature).toFixed(2)
           );
+
           done();
         });
       });
@@ -114,6 +118,7 @@ describe('PointDetails.vue', () => {
         status: 200,
         response: details
       });
+
       const Constructor = Vue.extend(PointDetails);
       const props = { point, temperatureFormat };
       const vm = new Constructor({ propsData: props }).$mount();
@@ -125,6 +130,7 @@ describe('PointDetails.vue', () => {
           ).to.include(
             kelvinToCelsius(details.observations[0].temperature).toFixed(2)
           );
+
           done();
         });
       });
@@ -146,6 +152,7 @@ describe('PointDetails.vue', () => {
           ).to.include(
             kelvinToCelsius(details.observations[1].temperature).toFixed(2)
           );
+
           done();
         });
       });
@@ -185,6 +192,7 @@ describe('PointDetails.vue', () => {
           ).to.include(
             parseFloat(details.observations[2].temperature).toFixed(2)
           );
+
           done();
         });
       });
@@ -207,6 +215,7 @@ describe('PointDetails.vue', () => {
           expect(vm.highestObservation.temperature).to.equal(
             parseFloat(details.observations[0].temperature)
           );
+
           done();
         });
       });
@@ -227,6 +236,7 @@ describe('PointDetails.vue', () => {
           expect(vm.lowestObservation.temperature).to.equal(
             parseFloat(details.observations[1].temperature)
           );
+
           done();
         });
       });
@@ -247,6 +257,7 @@ describe('PointDetails.vue', () => {
           expect(vm.latestObservation.temperature).to.equal(
             parseFloat(details.observations[2].temperature)
           );
+
           done();
         });
       });
@@ -259,6 +270,7 @@ describe('PointDetails.vue', () => {
         status: 200,
         response: details
       });
+
       moxios.stubRequest(`${baseUrl}observations/`, {
         status: 200,
         response: newObservation
@@ -288,6 +300,7 @@ describe('PointDetails.vue', () => {
             vm.details.observations[vm.details.observations.length - 1]
               .temperature
           ).to.equal(newObservation.temperature);
+
           done();
         });
       });
@@ -298,6 +311,7 @@ describe('PointDetails.vue', () => {
         status: 200,
         response: details
       });
+
       moxios.stubRequest(`${baseUrl}observations/`, {
         status: 400,
         response: { error: 'error' }
@@ -326,6 +340,7 @@ describe('PointDetails.vue', () => {
           expect(vm.details.observations.length).to.equal(
             details.observations.length
           );
+
           done();
         });
       });
