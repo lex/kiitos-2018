@@ -45,6 +45,11 @@ const temperatureFormat = 'celsius';
 describe('PointDetails.vue', () => {
   beforeEach(() => {
     moxios.install();
+
+    moxios.stubRequest(`${baseUrl}observation-points/1/`, {
+      status: 200,
+      response: details
+    });
   });
 
   afterEach(() => {
@@ -91,11 +96,6 @@ describe('PointDetails.vue', () => {
     });
 
     it('should show the latest observation when there is one', done => {
-      moxios.stubRequest(`${baseUrl}observation-points/1/`, {
-        status: 200,
-        response: details
-      });
-
       const Constructor = Vue.extend(PointDetails);
       const props = { point, temperatureFormat };
       const vm = new Constructor({ propsData: props }).$mount();
@@ -114,11 +114,6 @@ describe('PointDetails.vue', () => {
     });
 
     it('should show the highest observation when there is one', done => {
-      moxios.stubRequest(`${baseUrl}observation-points/1/`, {
-        status: 200,
-        response: details
-      });
-
       const Constructor = Vue.extend(PointDetails);
       const props = { point, temperatureFormat };
       const vm = new Constructor({ propsData: props }).$mount();
@@ -137,10 +132,6 @@ describe('PointDetails.vue', () => {
     });
 
     it('should show the lowest observation when there is one', done => {
-      moxios.stubRequest(`${baseUrl}observation-points/1/`, {
-        status: 200,
-        response: details
-      });
       const Constructor = Vue.extend(PointDetails);
       const props = { point, temperatureFormat };
       const vm = new Constructor({ propsData: props }).$mount();
@@ -159,10 +150,6 @@ describe('PointDetails.vue', () => {
     });
 
     it('should show a chart', done => {
-      moxios.stubRequest(`${baseUrl}observation-points/1/`, {
-        status: 200,
-        response: details
-      });
       const Constructor = Vue.extend(PointDetails);
       const props = { point, temperatureFormat };
       const vm = new Constructor({ propsData: props }).$mount();
@@ -176,10 +163,6 @@ describe('PointDetails.vue', () => {
     });
 
     it('should show temperatures in different units when the setting is changed', done => {
-      moxios.stubRequest(`${baseUrl}observation-points/1/`, {
-        status: 200,
-        response: details
-      });
       const Constructor = Vue.extend(PointDetails);
       const props = { point, temperatureFormat };
       const vm = new Constructor({ propsData: props }).$mount();
@@ -201,11 +184,6 @@ describe('PointDetails.vue', () => {
 
   describe('computed', () => {
     it('should determine the highest observation correctly', done => {
-      moxios.stubRequest(`${baseUrl}observation-points/1/`, {
-        status: 200,
-        response: details
-      });
-
       const Constructor = Vue.extend(PointDetails);
       const props = { point, temperatureFormat };
       const vm = new Constructor({ propsData: props }).$mount();
@@ -222,11 +200,6 @@ describe('PointDetails.vue', () => {
     });
 
     it('should determine the lowest observation correctly', done => {
-      moxios.stubRequest(`${baseUrl}observation-points/1/`, {
-        status: 200,
-        response: details
-      });
-
       const Constructor = Vue.extend(PointDetails);
       const props = { point, temperatureFormat };
       const vm = new Constructor({ propsData: props }).$mount();
@@ -243,11 +216,6 @@ describe('PointDetails.vue', () => {
     });
 
     it('should determine the latest observation correctly', done => {
-      moxios.stubRequest(`${baseUrl}observation-points/1/`, {
-        status: 200,
-        response: details
-      });
-
       const Constructor = Vue.extend(PointDetails);
       const props = { point, temperatureFormat };
       const vm = new Constructor({ propsData: props }).$mount();
@@ -266,11 +234,6 @@ describe('PointDetails.vue', () => {
 
   describe('methods', () => {
     it('onSubmit should send temperature to backend and add it to the list of observations', done => {
-      moxios.stubRequest(`${baseUrl}observation-points/1/`, {
-        status: 200,
-        response: details
-      });
-
       moxios.stubRequest(`${baseUrl}observations/`, {
         status: 200,
         response: newObservation
@@ -307,11 +270,6 @@ describe('PointDetails.vue', () => {
     });
 
     it('onSubmit should not add a temperature and show a message if backend says so', done => {
-      moxios.stubRequest(`${baseUrl}observation-points/1/`, {
-        status: 200,
-        response: details
-      });
-
       moxios.stubRequest(`${baseUrl}observations/`, {
         status: 400,
         response: { error: 'error' }
