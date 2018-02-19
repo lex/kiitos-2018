@@ -23,8 +23,8 @@ module.exports = function(config) {
       noInfo: true
     },
     coverageReporter: {
-      dir: './test/unit/coverage',
-      reporters: [{ type: 'lcov', subdir: '.' }, { type: 'text-summary' }]
+      type: 'lcov',
+      dir: './coverage',
     }
   });
 };
