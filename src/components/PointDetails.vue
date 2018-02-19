@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 class="point-name">
+    <h2 id="point-name">
       {{ point.name }}
     </h2>
 
@@ -11,7 +11,7 @@
             <h4 class="observation-quick">
               Latest observation
             </h4>
-            <p>
+            <p id="observation-latest">
               {{ formatTemperature(latestObservation.temperature) }} {{ temperatureUnit }} at {{ latestObservation.timestamp }}
             </p>
           </b-col>
@@ -20,7 +20,7 @@
             <h4 class="observation-quick">
               Highest observation for the last 24 hours
             </h4>
-            <p>
+            <p id="observation-highest">
               {{ formatTemperature(highestObservation.temperature) }} {{ temperatureUnit }} at {{ highestObservation.timestamp }}
             </p>
           </b-col>
@@ -29,14 +29,14 @@
             <h4 class="observation-quick">
               Lowest observation for the last 24 hours
             </h4>
-            <p>
+            <p id="observation-lowest">
               {{ formatTemperature(lowestObservation.temperature) }} {{ temperatureUnit }} at {{ lowestObservation.timestamp }}
             </p>
           </b-col>
         </b-row>
       </b-container>
     </div>
-    <p v-else>
+    <p id="no-observations" v-else>
       No observations.
     </p>
 
@@ -44,19 +44,20 @@
       <new-observation-form v-bind:form="form" v-bind:temperatureFormat="temperatureFormat" v-bind:onSubmit="onSubmit" v-bind:error="error" />
     </div>
 
-    <div class="history" v-if="details !== null && details.observations.length !== 0">
+    <div id="history" v-if="details !== null && details.observations.length !== 0">
       <h2>
         History
       </h2>
-      <div id="chart">
-        <temperature-chart v-bind:chartData="this.chartData" :options="{responsive: false, maintainAspectRatio: false}" :width="800" :height="400" v-bind:temperatureFormat="temperatureFormat" />
+      <div id="chart-div">
+        <temperature-chart id="temperature-chart" v-bind:chartData="this.chartData" :options="{responsive: false, maintainAspectRatio: false}" :width="800" :height="400" v-bind:temperatureFormat="temperatureFormat" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { getDetails, addObservation } from '../services/observations';
+import axios from 'axios';
+import baseUrl from '../utils/api';
 import TemperatureChart from './TemperatureChart';
 import NewObservationForm from './NewObservationForm';
 
@@ -86,15 +87,18 @@ export default {
   },
 
   mounted() {
-    getDetails(this.point.id).then(details => {
-      this.details = {
-        ...details,
-        observations: details.observations.map(o => ({
-          temperature: parseFloat(o.temperature),
-          timestamp: new Date(o.timestamp),
-        })),
-      };
-    });
+    axios
+      .get(`${baseUrl}observation-points/${this.point.id}/`)
+      .then(response => response.data)
+      .then(details => {
+        this.details = {
+          ...details,
+          observations: details.observations.map(o => ({
+            temperature: parseFloat(o.temperature),
+            timestamp: new Date(o.timestamp),
+          })),
+        };
+      });
   },
 
   methods: {
@@ -115,8 +119,11 @@ export default {
       }
 
       const temperature = f(parseFloat(this.form.observation)).toFixed(10);
+      const observation = { point_id: this.point.id, temperature };
 
-      addObservation(this.point.id, temperature)
+      axios
+        .post(`${baseUrl}observations/`, observation)
+        .then(response => response.data)
         .then(response => {
           this.details.observations.push({
             ...response,
@@ -230,10 +237,10 @@ export default {
 </script>
 
 <style>
-h2.point-name {
+#point-name {
   margin-bottom: 40px;
 }
-div.history {
+#history {
   margin-top: 40px;
 }
 h4.observation-quick {
