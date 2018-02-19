@@ -1,5 +1,8 @@
 # kiitos-2018-frontend
 
+[![Build Status](https://travis-ci.org/lex/kiitos-2018.svg?branch=master)](https://travis-ci.org/lex/kiitos-2018)
+[![Coverage Status](https://coveralls.io/repos/github/lex/kiitos-2018/badge.svg?branch=master)](https://coveralls.io/github/lex/kiitos-2018?branch=master)
+
 > A Vue.js project
 
 [Live demo](https://lex.github.io/kiitos-2018/)

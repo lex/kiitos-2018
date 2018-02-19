@@ -13,7 +13,7 @@ module.exports = function(config) {
     // 2. add it to the `browsers` array below.
     browsers: ['ChromeHeadless'],
     frameworks: ['mocha', 'sinon-chai'],
-    reporters: ['spec', 'coverage'],
+    reporters: ['spec', 'coverage', 'coveralls'],
     files: ['./index.js'],
     preprocessors: {
       './index.js': ['webpack', 'sourcemap']
@@ -23,7 +23,7 @@ module.exports = function(config) {
       noInfo: true
     },
     coverageReporter: {
-      dir: './coverage',
+      dir: './test/unit/coverage',
       reporters: [{ type: 'lcov', subdir: '.' }, { type: 'text-summary' }]
     }
   });
