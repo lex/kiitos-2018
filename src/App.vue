@@ -15,6 +15,9 @@ export default {
     Points,
     NavigationBar,
   },
+  created() {
+    document.title = 'Kiitos-2018';
+  },
   data() {
     return {
       temperatureFormat: 'celsius',
