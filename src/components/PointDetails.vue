@@ -140,7 +140,7 @@ export default {
     },
 
     formatTemperature(temperature) {
-      let f = v => v;
+      let f = v => parseFloat(v);
 
       switch (this.temperatureFormat) {
         case 'celsius':
@@ -163,19 +163,6 @@ export default {
         return null;
       }
 
-      let f = v => v;
-
-      switch (this.temperatureFormat) {
-        case 'celsius':
-          f = kelvinToCelsius;
-          break;
-        case 'fahrenheit':
-          f = kelvinToFahrenheit;
-          break;
-        default:
-          break;
-      }
-
       const chartData = {
         labels: this.details.observations.map(o => `${o.timestamp}`),
         datasets: [
@@ -183,7 +170,7 @@ export default {
             label: `Temperature (${this.temperatureUnit})`,
             backgroundColor: '#0080fa',
             data: this.details.observations.map(o =>
-              f(o.temperature).toFixed(2),
+              this.formatTemperature(o.temperature),
             ),
           },
         ],
